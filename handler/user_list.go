@@ -44,3 +44,38 @@ func (userListHandler *UserListHandler) CreateUserList(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, resp)
 }
+
+func (userListHandler *UserListHandler) GetUserListExpenses(c echo.Context) error {
+	userId := c.Get("id").(int64)
+
+	var query models.UserListExpenseQuery
+	if err := c.Bind(&query); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	data, total, err := userListHandler.UserListService.GetUserListExpenses(userId, query)
+	if err != nil {
+		return err
+	}
+
+	limit := query.Limit
+	if limit <= 0 {
+		limit = 10
+	}
+	page := query.Page
+	if page <= 0 {
+		page = 1
+	}
+	totalPages := (total + int64(limit) - 1) / int64(limit)
+
+	return c.JSON(http.StatusOK, models.BasicRespWithMeta{
+		Message: utils.Success,
+		Data:    data,
+		Meta: models.MetaPagination{
+			PageNumber:   int64(page),
+			PageSize:     int64(limit),
+			TotalPages:   totalPages,
+			TotalRecords: total,
+		},
+	})
+}

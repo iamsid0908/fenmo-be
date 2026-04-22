@@ -9,6 +9,7 @@ type Expense struct {
 	Amount      float64   `gorm:"column:amount;not null"`
 	CategoryID  int64     `gorm:"column:category_id;not null;index"`
 	Category    Category  `gorm:"foreignKey:CategoryID;references:ID"`
+	UserList    UserList  `gorm:"foreignKey:UserListID;references:ID"`
 	Currency    string    `gorm:"column:currency;not null;default:INR"`
 	Description string    `gorm:"column:description"`
 	Date        time.Time `gorm:"column:date;not null"`
@@ -31,8 +32,23 @@ type CreateExpenseRequest struct {
 }
 
 type ListExpenseQuery struct {
-	// Filter by category_id (optional). Pass ?category_id=3 in the query string.
 	CategoryID int64 `query:"category_id"`
+	UserListID int64 `query:"user_list_id"`
+	Page       int   `query:"page"`
+	Limit      int   `query:"limit"`
+}
+
+type RecentExpenseItem struct {
+	ID           int64     `json:"id"`
+	Amount       float64   `json:"amount"`
+	Currency     string    `json:"currency"`
+	CategoryID   int64     `json:"category_id"`
+	CategoryName string    `json:"category"`
+	UserListID   int64     `json:"user_list_id"`
+	UserListName string    `json:"user_list"`
+	Description  string    `json:"description"`
+	Date         time.Time `json:"date"`
+	CreatedAt    time.Time `json:"created_at"`
 }
 
 type ExpenseResponse struct {

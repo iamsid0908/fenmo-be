@@ -48,3 +48,7 @@ func (u *UserListService) CreateUserList(param models.CreateUserListReqs) (model
 		CreatedAt:   data.CreatedAt,
 	}, nil
 }
+
+func (u *UserListService) GetUserListExpenses(userID int64, query models.UserListExpenseQuery) ([]models.UserListExpenseSummary, int64, error) {
+	return u.UserListDomain.GetUserListExpenses(userID, query)
+}

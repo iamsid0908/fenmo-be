@@ -29,7 +29,13 @@ func v1Routes(g *echo.Group, h AppModel) {
 	userList := g.Group("/user-list", middleware.JWTVerify())
 	userList.GET("/get", h.UserList.GetUserList)
 	userList.POST("/create", h.UserList.CreateUserList)
+	userList.GET("/get_expenses", h.UserList.GetUserListExpenses)
+
+	category := g.Group("/category", middleware.JWTVerify())
+	category.POST("/create", h.Category.CreateCategory)
+	category.GET("/list", h.Category.GetCategories)
 
 	expense := g.Group("/expense", middleware.JWTVerify())
 	expense.POST("", h.Expense.CreateExpense)
+	expense.GET("/list", h.Expense.RecentExpenses)
 }

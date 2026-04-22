@@ -46,3 +46,27 @@ func (s *ExpenseService) CreateExpense(param models.CreateExpenseRequest) (model
 		CreatedAt:   data.CreatedAt,
 	}, nil
 }
+
+func (s *ExpenseService) RecentExpenses(userID int64, query models.ListExpenseQuery) ([]models.RecentExpenseItem, int64, error) {
+	data, total, err := s.ExpenseDomain.RecentExpenses(userID, query)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var result []models.RecentExpenseItem
+	for _, e := range data {
+		result = append(result, models.RecentExpenseItem{
+			ID:           e.ID,
+			Amount:       e.Amount,
+			Currency:     e.Currency,
+			CategoryID:   e.CategoryID,
+			CategoryName: e.Category.Name,
+			UserListID:   e.UserListID,
+			UserListName: e.UserList.Name,
+			Description:  e.Description,
+			Date:         e.Date,
+			CreatedAt:    e.CreatedAt,
+		})
+	}
+	return result, total, nil
+}
