@@ -37,6 +37,14 @@ var (
 	AuthTypeResetPassword = "reset password"
 )
 
+// expense
+var (
+	ErrInvalidAmount    = errors.New("amount must be greater than 0")
+	ErrEmptyCategoryID  = errors.New("category_id cannot be empty")
+	ErrEmptyUserListID  = errors.New("user_list_id cannot be empty")
+	ErrEmptyExpenseDate = errors.New("expense_date cannot be empty")
+)
+
 // count of channels,workspace,users
 var (
 	CountOfChannelsInWorkspace = 10

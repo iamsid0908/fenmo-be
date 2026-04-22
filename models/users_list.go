@@ -24,3 +24,28 @@ type GetUserList struct {
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
+
+type CreateUserListReqs struct {
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description"`
+	UserId      int64  `json:"-"`
+}
+
+type CreateUserListResp struct {
+	Name        string    `json:"name" validate:"required"`
+	Description string    `json:"description"`
+	UserId      int64     `json:"user_id"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+type UserListExpenseSummary struct {
+	ID           int64   `json:"id"`
+	Name         string  `json:"name"`
+	Description  string  `json:"description"`
+	TotalExpense float64 `json:"total_expense"`
+}
+
+type UserListExpenseQuery struct {
+	Page  int `query:"page"`
+	Limit int `query:"limit"`
+}

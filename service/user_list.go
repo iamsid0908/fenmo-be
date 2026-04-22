@@ -30,3 +30,25 @@ func (u *UserListService) GetUserList(userId int64) ([]models.GetUserList, error
 	}
 	return result, nil
 }
+
+func (u *UserListService) CreateUserList(param models.CreateUserListReqs) (models.CreateUserListResp, error) {
+	userList := models.UserList{
+		UserID:      param.UserId,
+		Name:        param.Name,
+		Description: param.Description,
+	}
+	data, err := u.UserListDomain.Create(userList)
+	if err != nil {
+		return models.CreateUserListResp{}, err
+	}
+	return models.CreateUserListResp{
+		Name:        data.Name,
+		Description: data.Description,
+		UserId:      data.UserID,
+		CreatedAt:   data.CreatedAt,
+	}, nil
+}
+
+func (u *UserListService) GetUserListExpenses(userID int64, query models.UserListExpenseQuery) ([]models.UserListExpenseSummary, int64, error) {
+	return u.UserListDomain.GetUserListExpenses(userID, query)
+}

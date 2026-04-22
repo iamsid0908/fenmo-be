@@ -12,6 +12,8 @@ type AppModel struct {
 	Auth     handler.AuthHandler
 	Role     handler.RoleHandler
 	UserList handler.UserListHandler
+	Expense  handler.ExpenseHandler
+	Category handler.CategoryHandler
 }
 
 func App() AppModel {
@@ -22,6 +24,8 @@ func App() AppModel {
 	userDomain := &domain.UserDomainCtx{}
 	roleDomain := &domain.RoleDomainCtx{}
 	userListDomain := &domain.UserListDomainCtx{}
+	expenseDomain := &domain.ExpenseDomainCtx{}
+	categoryDomain := &domain.CategoryDomainCtx{}
 
 	//service
 	healthService := service.HealthService{
@@ -40,7 +44,12 @@ func App() AppModel {
 	userListService := service.UserListService{
 		UserListDomain: userListDomain,
 	}
-
+	expenseService := service.ExpenseService{
+		ExpenseDomain: expenseDomain,
+	}
+	categoryService := service.CategoryService{
+		CategoryDomain: categoryDomain,
+	}
 	//handler
 	healthHandler := handler.HealthHandler{
 		HealthService: healthService,
@@ -57,12 +66,19 @@ func App() AppModel {
 	userListHandler := handler.UserListHandler{
 		UserListService: userListService,
 	}
-
+	expenseHandler := handler.ExpenseHandler{
+		ExpenseService: expenseService,
+	}
+	categoryHandler := handler.CategoryHandler{
+		CategoryService: categoryService,
+	}
 	return AppModel{
 		Health:   healthHandler,
 		User:     userHandler,
 		Auth:     authHandler,
 		Role:     roleHandler,
 		UserList: userListHandler,
+		Expense:  expenseHandler,
+		Category: categoryHandler,
 	}
 }
