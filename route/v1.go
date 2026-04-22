@@ -26,4 +26,7 @@ func v1Routes(g *echo.Group, h AppModel) {
 	user.GET("/get-user", h.User.GetUserName)
 	user.POST("/update-profile", h.User.UpdateUserProfile)
 
+	userList := g.Group("/user-list", middleware.JWTVerify())
+	userList.GET("/get", h.UserList.GetUserList)
+
 }
