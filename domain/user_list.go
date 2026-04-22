@@ -7,6 +7,7 @@ import (
 
 type UserListDomain interface {
 	GetUserList(userListParam models.UserList) ([]models.UserList, error)
+	Create(userList models.UserList) (models.UserList, error)
 }
 
 type UserListDomainCtx struct {
@@ -23,4 +24,12 @@ func (u *UserListDomainCtx) GetUserList(userListParam models.UserList) ([]models
 		return nil, result.Error
 	}
 	return userLists, nil
+}
+
+func (u *UserListDomainCtx) Create(userList models.UserList) (models.UserList, error) {
+	result := config.DbManager().Create(&userList)
+	if result.Error != nil {
+		return models.UserList{}, result.Error
+	}
+	return userList, nil
 }

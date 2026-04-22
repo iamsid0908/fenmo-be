@@ -28,5 +28,8 @@ func v1Routes(g *echo.Group, h AppModel) {
 
 	userList := g.Group("/user-list", middleware.JWTVerify())
 	userList.GET("/get", h.UserList.GetUserList)
+	userList.POST("/create", h.UserList.CreateUserList)
 
+	expense := g.Group("/expense", middleware.JWTVerify())
+	expense.POST("", h.Expense.CreateExpense)
 }
